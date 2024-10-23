@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from functools import partial
 
 
 def make_noisy_data(fn, num_samples, x_min, x_max):
     x = np.linspace(x_min, x_max, num_samples)
-    y = np.log(fn(x))
-    noise = np.random.normal(0, .1, num_samples)
-    y = np.exp(y + noise)
+    y = fn(x)
+    mag = np.mean(y) / 5.
+    noise = np.random.normal(0, mag, num_samples)
+    y = y + noise
 
     return x, y
 
@@ -23,7 +25,7 @@ Useful code snippets:
 
 
 def line(x, a, b):
-    pass
+    return a * x + b
 
 
 def line_grad_sqerr(x, y_true, a, b):
@@ -34,4 +36,9 @@ def line_grad_sqerr(x, y_true, a, b):
 
 
 if __name__ == "__main__":
-    pass
+    a_true = 10
+    b_true = -20
+
+    x, y_true = make_noisy_data(partial(line, a=a_true, b=b_true), 100, 0, 10)
+    plt.scatter(x, y_true)
+    plt.show()

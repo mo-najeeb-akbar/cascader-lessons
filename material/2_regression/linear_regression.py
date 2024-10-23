@@ -25,8 +25,7 @@ Useful code snippets:
 
 
 def line(x, a, b):
-    return a * x + b
-
+    pass
 
 def line_grad_sqerr(x, y_true, a, b):
     # (ax + b - y)^2

@@ -53,13 +53,17 @@ if __name__ == "__main__":
     learning_rate = 0.01
 
     # training loop
-    num_steps = 10_000
+    num_steps = 10
+    fig, ax = plt.subplots()
+    framerate = 60
+    delay = 1.0 / framerate
 
     for step in range(num_steps):
         d_da, d_db, d_dc, err = grad_func(x, y_true, a, b, c)
         avg_d_da = np.mean(d_da)
         avg_d_db = np.mean(d_db)
         avg_d_dc = np.mean(d_dc)
+        avg_err = np.mean(err)
 
         print(f'At step {step}: d_da: {avg_d_da} -- d_db: {avg_d_db} -- d_dc:{avg_d_dc}')
         # update rule
@@ -69,9 +73,15 @@ if __name__ == "__main__":
 
         print(f'At step {step}: a: {a} -- b: {b} -- c:{c}')
         print(f'At step {step}: error: {np.mean(err)}')
+        if step % 10 == 0:
+            ax.clear()
+            ax.scatter(x, y_true, c='g')
+            ax.plot(x, square(x, a, b, c), c='r')
+            plt.title(f'Values for: a: {a:.3f} -- b: {b:.3f} -- c: {c:.3f} -- err: {avg_err:.3f}')
+            plt.draw()
+            plt.pause(delay)
 
-    plt.scatter(x, y_true, c='g')
-    plt.plot(x, square(x, a, b, c), c='r')
+    # plt.ioff()  # Interactive mode off
     plt.show()
 
     # For exponential
@@ -81,12 +91,17 @@ if __name__ == "__main__":
     learning_rate = 0.001
 
     # training loop
-    num_steps = 10_000
+    num_steps = 1000
+
+    fig, ax = plt.subplots()
+    framerate = 60
+    delay = 1.0 / framerate
 
     for step in range(num_steps):
         d_da, d_db, err = grad_func(x, y_true, a, b)
         avg_d_da = np.mean(d_da)
         avg_d_db = np.mean(d_db)
+        avg_err = np.mean(err)
 
         print(f'At step {step}: d_da: {avg_d_da} -- d_db: {avg_d_db}')
         # update rule
@@ -95,7 +110,13 @@ if __name__ == "__main__":
 
         print(f'At step {step}: a: {a} -- b: {b}')
         print(f'At step {step}: error: {np.mean(err)}')
+        if True:
+            ax.clear()
+            ax.scatter(x, y_true, c='g')
+            plt.plot(x, exp(x, a, b,), c='r')
+            plt.title(f'Values for: a: {a:.3f} -- b: {b:.3f} -- err: {avg_err:.3f}')
+            plt.draw()
+            plt.pause(delay)
 
-    plt.scatter(x, y_true, c='g')
-    plt.plot(x, exp(x, a, b,), c='r')
+    plt.ioff()  # Interactive mode off
     plt.show()

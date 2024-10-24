@@ -25,5 +25,7 @@ RUN pip install opencv-python numpy matplotlib
 # Set the working directory
 WORKDIR /code
 
+ENV DISPLAY=host.docker.internal:0
+
 # Set the entry point to bash so it opens the terminal when the container starts
 ENTRYPOINT ["/bin/bash"]
